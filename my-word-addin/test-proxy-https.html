@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ollama HTTPS Proxy Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+      }
+      #log {
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 300px;
+        overflow-y: auto;
+        margin-top: 20px;
+        background-color: #f9f9f9;
+        font-family: monospace;
+      }
+      .success {
+        color: green;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Ollama HTTPS Proxy Test</h1>
+    <div>
+      <button id="check-health-https">Check HTTPS Proxy Health</button>
+      <button id="get-models-https">Get Models (HTTPS)</button>
+      <button id="send-message-https">Send Test Message (HTTPS)</button>
+    </div>
+    <div id="log"></div>
+
+    <script>
+      const log = document.getElementById("log");
+
+      function addLog(message, isError = false) {
+        const entry = document.createElement("div");
+        entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        entry.className = isError ? "error" : "success";
+        log.appendChild(entry);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      // Check proxy health (HTTPS)
+      document.getElementById("check-health-https").addEventListener("click", async () => {
+        addLog("Checking HTTPS proxy health...");
+        try {
+          const response = await fetch("https://localhost:3443/api/ollama/health");
+          const data = await response.json();
+          addLog(`HTTPS Health check result: ${JSON.stringify(data)}`);
+        } catch (error) {
+          addLog(`Error checking HTTPS health: ${error.message}`, true);
+        }
+      });
+
+      // Get models (HTTPS)
+      document.getElementById("get-models-https").addEventListener("click", async () => {
+        addLog("Getting models via HTTPS...");
+        try {
+          const response = await fetch("https://localhost:3443/api/ollama/tags");
+          const data = await response.json();
+          addLog(`HTTPS Models: ${JSON.stringify(data.models.map((m) => m.name))}`);
+        } catch (error) {
+          addLog(`Error fetching models via HTTPS: ${error.message}`, true);
+        }
+      });
+
+      // Send test message (HTTPS)
+      document.getElementById("send-message-https").addEventListener("click", async () => {
+        addLog("Sending test message to Ollama via HTTPS...");
+        try {
+          const response = await fetch("https://localhost:3443/api/ollama/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "mistral",
+              prompt: "Say hello world",
+              stream: false,
+            }),
+          });
+          const data = await response.json();
+          addLog(`HTTPS Response: ${data.response}`);
+        } catch (error) {
+          addLog(`Error sending message via HTTPS: ${error.message}`, true);
+        }
+      });
+
+      // Add initial log
+      addLog("HTTPS Test page loaded. Click buttons to test secure proxy connection.");
+    </script>
+  </body>
+</html>

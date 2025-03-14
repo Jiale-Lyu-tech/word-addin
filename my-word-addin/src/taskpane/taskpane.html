@@ -1,0 +1,129 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DoubleBridge RegX AI Platform</title>
+
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+
+    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"
+    />
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <!-- Template styles -->
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body class="ms-font-m ms-welcome">
+    <div id="container">
+      <header class="header">
+        <img src="../../assets/doublebridge-logo.png" alt="DoubleBridge Logo" class="logo" />
+        <h1>DoubleBridge RegX AI Platform</h1>
+        <div class="info-button"><i class="fas fa-info-circle"></i></div>
+        <div class="close-button"><i class="fas fa-times"></i></div>
+      </header>
+
+      <nav class="navigation">
+        <button class="nav-button active">RegChat</button>
+        <button class="nav-button">Prompts</button>
+        <button class="nav-button">Attributes</button>
+        <button class="nav-button">Sources</button>
+        <button class="nav-button">Data Sections</button>
+      </nav>
+
+      <div class="main-content">
+        <div class="chat-section">
+          <div class="chat-list">
+            <button class="new-chat-button">New Chat</button>
+            <div class="chat-item">
+              <span>Chat 1</span>
+              <span class="chat-item-delete" title="Delete chat">×</span>
+            </div>
+            <div class="chat-item">
+              <span>Chat 2</span>
+              <span class="chat-item-delete" title="Delete chat">×</span>
+            </div>
+            <div class="chat-item">
+              <span>Chat 3</span>
+              <span class="chat-item-delete" title="Delete chat">×</span>
+            </div>
+          </div>
+
+          <div class="chat-interface">
+            <div class="model-selector">
+              <select>
+                <option>Mistral (Local)</option>
+                <option>Llama (Local)</option>
+                <option>Azure GPT-4o</option>
+              </select>
+            </div>
+
+            <div class="chat-messages">
+              <!-- Chat messages will appear here -->
+            </div>
+
+            <div class="chat-input">
+              <textarea placeholder="Provide your instructions here and click on the send icon."></textarea>
+              <button class="send-button">➤</button>
+            </div>
+
+            <div class="prompt-buttons">
+              <div class="prompt-buttons-title">Predefined Prompts</div>
+              <div class="prompt-buttons-container">
+                <button class="prompt-button" data-prompt="summarize">Summarize</button>
+                <button class="prompt-button" data-prompt="key-points">Key Points</button>
+                <button class="prompt-button" data-prompt="explain">Explain Simply</button>
+                <button class="prompt-button" data-prompt="analyze">Analyze</button>
+                <button class="prompt-button" data-prompt="translate-en">Translate to English</button>
+                <button class="prompt-button" data-prompt="translate-zh">Translate to Chinese</button>
+                <button class="prompt-button" data-prompt="next-steps">Next Steps</button>
+                <button class="prompt-button" data-prompt="custom">Custom Prompts</button>
+              </div>
+            </div>
+
+            <div class="quick-actions">
+              <h3>Quick Actions</h3>
+              <button class="action-button">Translate</button>
+              <button class="action-button">Export Chat</button>
+              <button class="action-button">Insert to Document</button>
+            </div>
+
+            <div class="available-prompts">
+              <h3>Available Prompts</h3>
+              <div class="prompt-controls">
+                <select>
+                  <option>Select a prompt</option>
+                </select>
+                <button class="edit-button">Edit</button>
+                <button class="new-button">New</button>
+              </div>
+            </div>
+
+            <div class="available-sources">
+              <h3>Available Sources</h3>
+              <!-- Sources will be listed here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="processing-info">
+          ⚡ Real-time processing powered by
+          <span class="company-name">DoubleBridge Technologies GenAI</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

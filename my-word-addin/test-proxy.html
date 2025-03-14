@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ollama Proxy Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+      }
+      #log {
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 300px;
+        overflow-y: auto;
+        margin-top: 20px;
+        background-color: #f9f9f9;
+        font-family: monospace;
+      }
+      .success {
+        color: green;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Ollama Proxy Test</h1>
+    <div>
+      <button id="check-health">Check Proxy Health</button>
+      <button id="get-models">Get Models</button>
+      <button id="send-message">Send Test Message</button>
+    </div>
+    <div id="log"></div>
+
+    <script>
+      const log = document.getElementById("log");
+
+      function addLog(message, isError = false) {
+        const entry = document.createElement("div");
+        entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        entry.className = isError ? "error" : "success";
+        log.appendChild(entry);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      // Check proxy health
+      document.getElementById("check-health").addEventListener("click", async () => {
+        addLog("Checking proxy health...");
+        try {
+          const response = await fetch("http://localhost:3001/api/ollama/health");
+          const data = await response.json();
+          addLog(`Health check result: ${JSON.stringify(data)}`);
+        } catch (error) {
+          addLog(`Error checking health: ${error.message}`, true);
+        }
+      });
+
+      // Get models
+      document.getElementById("get-models").addEventListener("click", async () => {
+        addLog("Getting models...");
+        try {
+          const response = await fetch("http://localhost:3001/api/ollama/tags");
+          const data = await response.json();
+          addLog(`Models: ${JSON.stringify(data.models.map((m) => m.name))}`);
+        } catch (error) {
+          addLog(`Error fetching models: ${error.message}`, true);
+        }
+      });
+
+      // Send test message
+      document.getElementById("send-message").addEventListener("click", async () => {
+        addLog("Sending test message to Ollama...");
+        try {
+          const response = await fetch("http://localhost:3001/api/ollama/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "mistral",
+              prompt: "Say hello world",
+              stream: false,
+            }),
+          });
+          const data = await response.json();
+          addLog(`Response: ${data.response}`);
+        } catch (error) {
+          addLog(`Error sending message: ${error.message}`, true);
+        }
+      });
+
+      // Add initial log
+      addLog("Test page loaded. Click buttons to test proxy connection.");
+    </script>
+  </body>
+</html>
